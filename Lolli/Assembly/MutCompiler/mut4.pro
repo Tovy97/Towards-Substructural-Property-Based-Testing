@@ -71,7 +71,7 @@ cevalComp(Vars, if(B, C1, C2), Ris) :-
     !,
     evalComp(Vars, B, A1),
     cevalComp(Vars, C1, A3),
-    lenAdd(A3, 0, Hop1),            %<- 0 al posto di 1
+    lenAdd(A3, 1, Hop1),    
     cevalComp(Vars, C2, A4),
     lenAdd(A4, 0, Hop2),
     append(A1, [bfl_cmd(Hop1)], Temp1),
@@ -82,12 +82,12 @@ cevalComp(Vars, while(B, C), Ris) :-
     !,
     evalComp(Vars, B, A1),
     cevalComp(Vars, C, A3),
-    lenAdd(A3, 1, Hop1),
-    lenAdd(A1, 1, HopTemp1),    
+    lenAdd(A3, 1, Hop1),                     
+    lenAdd(A1, 1, HopTemp1),           
     Hop2 is -1 * (HopTemp1 + Hop1),
-    append(A1, [bfl_cmd(Hop1)], Temp1),
+    append(A1, [bfl_cmd(0)], Temp1),     % 0 al posto di Hop1
     append(Temp1, A3, Temp2),
-    append(Temp2, [branch_cmd(Hop2)], Ris).
+    append(Temp2, [branch_cmd(0)], Ris). % 0 al posto di Hop2
 %cevalComp(+Vars, +ImpProgram, -AssemblyList).
 
 list_to_assembly([], halt_cmd).

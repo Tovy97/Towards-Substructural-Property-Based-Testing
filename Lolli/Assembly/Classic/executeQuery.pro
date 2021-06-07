@@ -44,7 +44,7 @@ execQueryC(Q, D, C, G) :-
     nb_setval(query, (0, 0, n)), 
     D2 is 2 * D,
     !,      
-    (queryC(Q, G, D, D2, C, State, VarList, VarType, A, P, T) ->  
+    (time(queryC(Q, G, D, D2, C, State, VarList, VarType, A, P, T)) ->  
         (
             write("Test non passato.\nControesempio\nAsm:\n"),             
             write(A),            

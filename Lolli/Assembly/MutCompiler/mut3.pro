@@ -55,7 +55,7 @@ lenAdd(List, V, H) :-
     H is Temp + V.
 % lenAdd(+AssemblyList, +Inc, -LenWithInc).
 
-cevalComp(_, skip, []) :-           
+cevalComp(_, skip, []) :- 
     !.
 cevalComp(Vars, assign(X, E), Ris) :-
     member(X, Vars),
@@ -71,10 +71,10 @@ cevalComp(Vars, if(B, C1, C2), Ris) :-
     !,
     evalComp(Vars, B, A1),
     cevalComp(Vars, C1, A3),
-    lenAdd(A3, 1, Hop1),    
+    lenAdd(A3, 0, Hop1),            %<- 0 al posto di 1
     cevalComp(Vars, C2, A4),
     lenAdd(A4, 0, Hop2),
-    append(A1, [branch_cmd(Hop1)], Temp1),         % <- branch_cmd al posto di bfl_cmd
+    append(A1, [bfl_cmd(Hop1)], Temp1),
     append(Temp1, A3, Temp2),
     append(Temp2, [branch_cmd(Hop2)], Temp3),
     append(Temp3, A4, Ris).

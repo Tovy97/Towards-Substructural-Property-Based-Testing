@@ -25,19 +25,18 @@ genVars(true, [type(int, X) | Gamma], [variable(X, vi(RandInt)) | Delta], [X | V
 %! genVars(+Rand, +Gamma, -Delta, -VarsList).
 
 init_var(Rand, Delta, VarsList, Gamma) :-    
-    Gamma = [type(bool, x), type(bool, y), type(int, w), type(int, z)],
+    Gamma = [type(int, w), type(bool, x), type(bool, y), type(int, z)],
     genVars(Rand, Gamma, Delta, VarsList).
 %! init_var(+Rand, -Delta, -VarsList, -Gamma).
 
 init_var(Delta, VarsList, Gamma) :-    
-    Gamma = [type(bool, x), type(bool, y), type(int, w), type(int, z)],
+    Gamma = [type(int, w), type(bool, x), type(bool, y), type(int, z)],
     genVars(false, Gamma, Delta, VarsList).
 %! init_var(-Delta, -VarsList, -Gamma).
 
 convert_list([], []).
 convert_list([(X, V) | L1], [variable(X, V)| L2]) :-
     convert_list(L1, L2).
-
 
 updateGeneratedTest() :-
     nb_getval(query, (Q, S, _)),

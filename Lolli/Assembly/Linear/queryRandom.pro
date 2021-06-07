@@ -1,9 +1,9 @@
 :- ['../../Imp/CPS/gen.pro'].
 :- ['../../Implementazione/Interprete/2ndOrder/llinterp.pro'].
 
-queryL(0, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :- 
+queryL(0, Gas, Dim, NumOfTests, Cert, Delta, Vars, Gamma, A, P, prog) :- 
     write("***Determinismo asm_evalP --> forall a, asm_evalP(a, v1) -> asm_evalP(a, v2) -> v1 = v2"), nl,
-    genProg(Cert, Dim, Dim2, P, Gamma),   
+    genNRandProg(Cert, NumOfTests, Dim, P, Gamma), 
     updateGeneratedTest(),  
     comp(Vars, P, A),
     seq([], Delta, asm_interpG(Gas, A, Vars, V1)), 
@@ -16,10 +16,10 @@ queryL(0, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :-
     write("V1: "), write(V1), nl,
     write("V2: "), write(V2), nl, nl.        
     
-queryL(1, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :- 
+queryL(1, Gas, Dim, NumOfTests, Cert, Delta, Vars, Gamma, A, P, prog) :- 
     write("***Compilato come originale (stesso stato) --> forall p, comp(p, a) -> ceval(p, v1) -> asm_evalP(a, v2) -> v1 = v2"), nl,
     GasAsm is Gas * 10,
-    genProg(Cert, Dim, Dim2, P, Gamma),       
+    genNRandProg(Cert, NumOfTests, Dim, P, Gamma), 
     updateGeneratedTest(),  
     comp(Vars, P, A),
     seq([], Delta, interpG(Gas, P, Vars, V1)), 
@@ -32,10 +32,10 @@ queryL(1, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :-
     write("V1: "), write(V1), nl,
     write("V2: "), write(V2), nl, nl.           
 
-queryL(2, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :- 
+queryL(2, Gas, Dim, NumOfTests, Cert, Delta, Vars, Gamma, A, P, prog) :- 
     write("Compilato come originale --> forall p, comp(p, a) -> ceval(p, v1) -> asm_evalP(a, v1)"), nl,
     GasAsm is Gas * 10,
-    genProg(Cert, Dim, Dim2, P, Gamma),   
+    genNRandProg(Cert, NumOfTests, Dim, P, Gamma), 
     updateGeneratedTest(),  
     comp(Vars, P, A),
     seq([], Delta, interpG(Gas, P, Vars, V1)), 
@@ -46,10 +46,10 @@ queryL(2, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :-
     write("A: "), write(A), nl,    
     write("V2: "), write(V1), nl, nl.   
 
-queryL(3, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :- 
+queryL(3, Gas, Dim, NumOfTests, Cert, Delta, Vars, Gamma, A, P, prog) :- 
     write("Originale come compilato --> forall p, comp(p, a) -> asm_evalP(a, v1) -> ceval(p, v1)"), nl,
     GasAsm is Gas * 10,
-    genProg(Cert, Dim, Dim2, P, Gamma),   
+    genNRandProg(Cert, NumOfTests, Dim, P, Gamma), 
     updateGeneratedTest(),  
     comp(Vars, P, A),
     seq([], Delta, asm_interpG(GasAsm, A, Vars, V1)),    
@@ -60,9 +60,9 @@ queryL(3, Gas, Dim, Dim2, Cert, Delta, Vars, Gamma, A, P, prog) :-
     write("A: "), write(A), nl,    
     write("V2: "), write(V1), nl, nl. 
 
-queryL(4, _, Dim, Dim2, Cert, Delta, Vars, Gamma, A, E, exp) :-     
+queryL(4, _, Dim, NumOfTests, Cert, Delta, Vars, Gamma, A, E, exp) :-     
     write("Compilatazione espressioni"), nl,
-    genExp(Cert, Dim, Dim2, _, E, Gamma),  
+    genNRandExp(Cert, NumOfTests, Dim, _, E, Gamma), 
     updateGeneratedTest(),  
     compExp(Vars, E, A),
     seq([], Delta, eval(E, V, erase)),      
@@ -74,9 +74,9 @@ queryL(4, _, Dim, Dim2, Cert, Delta, Vars, Gamma, A, E, exp) :-
     write("A: "), write(A), nl,
     write("V: "), write(V), nl, nl.   
 
-queryL(5, _, Dim, Dim2, Cert, _, Vars, Gamma, A, E, exp) :-     
+queryL(5, _, Dim, NumOfTests, Cert, _, Vars, Gamma, A, E, exp) :-     
     write("***teorema di preservazione --> forall E, has_type(E, T) -> compExp(E, A) -> check_asm_type(A) -> T è in cima allo stack"), nl,
-    genExp(Cert, Dim, Dim2, _, E, Gamma),  
+    genNRandExp(Cert, NumOfTests, Dim, _, E, Gamma),   
     updateGeneratedTest(),  
     compExp(Vars, E, A),
     seq(Gamma, [], has_type(E, T)),      
@@ -87,4 +87,4 @@ queryL(5, _, Dim, Dim2, Cert, _, Vars, Gamma, A, E, exp) :-
     write("E: "), write(E), nl,
     write("A: "), write(A), nl,
     write("T: "), write(T), nl, nl.      
-%! queryL(+Number, +Gas, +Dimension, +Dimension2, +Certificate, +Delta, +VarList, +Gamma, -CounterExampleAsm, -CounterExampleImp)
+%! queryL(+Number, +Gas, +Dimension, +NumOfTests, +Certificate, +Delta, +Vars, +Gamma, -CounterExampleASM, -CounterExampleIMP, -TypeOfQuery)

@@ -6,8 +6,7 @@
 mutation('0') :-
     ['typeChecker.ll'],
     ['imp.ll'],
-    ['smallStep.ll'],
-    ['extension.ll'].
+    ['smallStep.ll'].
 mutation(N) :-
     atom_concat('Mutation/mut', N, Temp),
     atom_concat(Temp, '.ll', Ris),
@@ -40,7 +39,7 @@ execQueryL(Q, N, D, C, G) :-
     init_var(true, Delta, VarList, Gamma),
     nb_setval(query, (0, 0, n)),     
     !,      
-    (queryL(Q, G, D, N, C, Delta, VarList, Gamma, P, T) ->  
+    (time(queryL(Q, G, D, N, C, Delta, VarList, Gamma, P, T)) ->  
         (
             write("Test non passato.\nControesempio\n"), 
             write(P),            
