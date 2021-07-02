@@ -21,7 +21,7 @@ than the traditional one, based on state-passing specifications.
 Besides, in the case studies we  have  carried  out  so  far  we  generate  
 mostly persistent data  (expressions,  programs).
 Rather,  we  advocate  the  coupling  of  validation  and  (eventually)  verification  for  thoseencoding  where  linearity  
-does  make  a  difference  in  terms  of  drastically  simplifying  therequired infrastructure. 
+does  make  a  difference  in  terms  of  drastically  simplifying  the required infrastructure. 
 
 ## Code
 In folder "Implementazione" is possible to find Lolli interpreter.
